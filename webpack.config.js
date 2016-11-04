@@ -4,8 +4,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 //单独打包css文件
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
-// var appModulesPath = path.resolve('app'); // gulpfiles process is run in ./tools folder
-// var nodeModulesPath = path.join(__dirname, 'node_modules');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 console.info("目录： 》》》》》" + __dirname);
 
@@ -98,6 +97,10 @@ if (process.env.NODE_ENV === 'production') {
             output: {
                 comments: false, // remove all comments
             }
-        })
+        }),
+        new CopyWebpackPlugin([
+            { from: './app/index.html', to: 'index.html' },
+            { from: './app/**/*.css', to: 'main.css' }
+        ]),
     ])
 }
