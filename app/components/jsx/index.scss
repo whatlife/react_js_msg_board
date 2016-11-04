@@ -1,0 +1,7 @@
+$nameColor: #f89;
+.name_list {
+    color: $nameColor;
+    &:last-child {
+        color: green;
+    }
+}
