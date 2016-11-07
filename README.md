@@ -7,18 +7,24 @@
     css-loader 用于将 css 当做模块一样来 import
     style-loader 用于自动将 css 添加到页面
     extract-text-webpack-plugin 分离css文件
+    使用cross-env解决跨平台设置NODE_ENV的问题（unix和windows）
+    
 
 # node_modules
-解压node_modules.zip 到 react_wx_school 目录下，与package.json同目录
 
 # 运行
-安装：npm install
-开发： npm run dev
+安装：`npm install`
+或者安装淘宝镜像
+
+`npm install -g cnpm --registry=https://registry.npm.taobao.org`
+
+开发：`npm run dev`
 
 
 # TODO
 - ~~webpack production ENV~~
-- 把第三方插件独立出来
+- ~~把第三方插件独立出来~~
+- 加入postcss. css3自动补全
 
 
 

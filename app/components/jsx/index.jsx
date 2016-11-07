@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 
 import "./index.scss";
 
-var names = ['Alice', 'Emily', '我是绿色'];
+var names = ['Alice', 'Emily', 'Jhon', '我是绿色'];
 
 ReactDom.render(
     <div>

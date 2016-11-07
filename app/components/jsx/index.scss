@@ -1,7 +1,9 @@
 $nameColor: #f89;
 .name_list {
+    display:flex;// 测试postcss
     color: $nameColor;
     &:last-child {
         color: green;
     }
 }
+

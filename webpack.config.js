@@ -1,7 +1,6 @@
 var path = require('path')
 var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-//单独打包css文件
+var ExtractTextPlugin = require("extract-text-webpack-plugin");//单独打包css文件
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -10,7 +9,6 @@ console.info("目录： 》》》》》" + __dirname);
 
 //模块别名 方便索引
 var alias = {
-    jquery: 'app/common/lib/jquery',
     zepto: 'app/common/lib/zepto.min'
 };
 
@@ -20,12 +18,17 @@ module.exports = {
         hot: true,
         inline: true,
         progress: true,
+        colors: true,
         contentBase: './app',
         port: 8080
     },
-    entry: [
-        path.resolve(__dirname, 'app/index.jsx')
-    ],
+    // entry: [
+    //     path.resolve(__dirname, 'app/index.jsx')
+    // ],
+    entry: {
+        main: path.resolve(__dirname, 'app/index.jsx'), // 唯一入口文件
+        vendor: ['react']   //这里是依赖的库文件配置，和CommonsChunkPlugin配合使用可以单独打包
+    },
     output: {
         path: __dirname + '/build',
         publicPath: '/',
@@ -49,13 +52,10 @@ module.exports = {
             ]
         }, {
             test: /\.css$/,
-            loader: ExtractTextPlugin.extract("style", "css-loader?sourceMap")
+            loader: ExtractTextPlugin.extract("style", "css?sourceMap!postcss")
         }, {
             test: /\.scss$/,
-            loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!sass-loader?sourceMap")
-        }, {
-            test: /jquery/,
-            loader: 'exports?$'
+            loader: ExtractTextPlugin.extract("style", "css?sourceMap!postcss!sass?sourceMap")
         }, {
             test: /zepto/,
             loader: 'exports?$'
@@ -70,10 +70,14 @@ module.exports = {
         // }),
         new ExtractTextPlugin("[name].css"),
         new webpack.HotModuleReplacementPlugin(),
-        // //将第三方库打包到vendor.js
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'vendor'
-        // })
+        //将第三方库打包到vendor.js
+        new CommonsChunkPlugin({
+           name: 'vendor',
+           filename: 'vendor.js'
+        })
+    ],
+    postcss: [
+        require('autoprefixer')    //调用autoprefixer插件,css3自动补全
     ],
     resolve: {
         root: __dirname,
@@ -82,6 +86,7 @@ module.exports = {
     }
 }
 
+// 生产环境打包
 if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = '#source-map';
     module.exports.plugins = (module.exports.plugins || []).concat([
